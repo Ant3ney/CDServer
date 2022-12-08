@@ -1,0 +1,17 @@
+{
+  "name": "cdserver",
+  "version": "1.0.0",
+  "description": "Server to facilitate continuous deployment",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anthony Cavuoti",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
