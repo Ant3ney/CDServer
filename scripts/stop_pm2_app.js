@@ -2,9 +2,9 @@ const { exec } = require("child_process");
 const fs = require('fs');
 const path = require('path');
 
-const configureAppPermissions = async (repo, dir) => {
+const stopPM2App = async (app) => {
         return new Promise((res, rej) => {
-                exec(`cd /home/Anthony && sudo git clone ${repo} ./${dir}`, (error, stdout, stderr) => {
+                exec(`pm2 stop ${app}`, (error, stdout, stderr) => {
                         if (error) {
                                 console.log(`error: ${error.message}`);
                                 return(rej(error));
@@ -13,10 +13,10 @@ const configureAppPermissions = async (repo, dir) => {
                                 console.log(`stderr: ${stderr}`);
                         }
                         console.log(`stdout: ${stdout}`);
-                        console.log('Successfully handled clone operation');
+                        console.log(`Removed ${app} from pm2 list via pm2 stop ${app} command`);
                         return(res(stdout));
         });
     });
 };
 
-module.exports = configureAppPermissions;
+module.exports = stopPM2App;
