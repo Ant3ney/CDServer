@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the continuous deployment server :)");
 });
 
-app.get("/deploy/marva", async (req, res) => {
+app.post("/deploy/marva", async (req, res) => {
   console.log('Stoping exzisting PM2 App');
   await stopPM2App(marvaENV.APP_NAME);
   console.log('Removing old app');
