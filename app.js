@@ -10,12 +10,15 @@ const confPM2App =  require('./scripts/conf_pm2_app');
 const buildENV = require('./scripts/build_ENV');
 const port = process.env.PORT || 3000;
 const marvaENV = require('./marvaENV');
+const stopPM2App = require('./scripts/stop_pm2_app');
 
 app.get("/", (req, res) => {
   res.send("Welcome to the continuous deployment server :)");
 });
 
 app.get("/deploy/marva", async (req, res) => {
+  console.log('Stoping exzisting PM2 App');
+  await stopPM2App(marvaENV.APP_NAME);
   console.log('Removing old app');
   await rmSevrDir(marvaENV.APP_NAME);
   console.log('Cloning new app from repo');
@@ -27,7 +30,7 @@ app.get("/deploy/marva", async (req, res) => {
   console.log('Building new ENV file');
   await buildENV(marvaENV.APP_NAME);
   console.log('Configuring pm2 to app ' + marvaENV.APP_NAME);
-  await confPM2App(marvaENV.APP_NAME);
+  await confPM2App(marvaENV);
   res.send('CD Server deploy retailer');
  
 });
