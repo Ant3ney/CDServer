@@ -1,8 +1,8 @@
 const { exec } = require("child_process");
 
-const templateExec = async (arg) => {
+const setUpPM2Path = async () => {
         return new Promise((res, rej) => {
-                exec(`echo "Hello template"`, (error, stdout, stderr) => {
+                exec(`sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u Anthony --hp /home/Anthony`, (error, stdout, stderr) => {
                         if (error) {
                                 console.log(`error: ${error.message}`);
                                 return(rej(error));
@@ -11,10 +11,10 @@ const templateExec = async (arg) => {
                                 console.log(`stderr: ${stderr}`);
                         }
                         console.log(`stdout: ${stdout}`);
-                        console.log('Sucessfully ran template exec!');
+                        console.log('Sucessfully ran pm2 path');
                         return(res(stdout));
         	});
     	});
 };
 
-module.exports = templateExec;
+module.exports = setUpPM2Path;

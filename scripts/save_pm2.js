@@ -1,8 +1,8 @@
 const { exec } = require("child_process");
 
-const templateExec = async (arg) => {
+const savePM2 = async () => {
         return new Promise((res, rej) => {
-                exec(`echo "Hello template"`, (error, stdout, stderr) => {
+                exec(`pm2 save`, (error, stdout, stderr) => {
                         if (error) {
                                 console.log(`error: ${error.message}`);
                                 return(rej(error));
@@ -11,10 +11,10 @@ const templateExec = async (arg) => {
                                 console.log(`stderr: ${stderr}`);
                         }
                         console.log(`stdout: ${stdout}`);
-                        console.log('Sucessfully ran template exec!');
+                        console.log('Sucessfully saved pm2 config');
                         return(res(stdout));
         	});
     	});
 };
 
-module.exports = templateExec;
+module.exports = savePM2;
