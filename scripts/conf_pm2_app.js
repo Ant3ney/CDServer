@@ -19,6 +19,7 @@ const configurePM2App = async (env) => {
 		await savePM2();
 		console.log(`Getting pm2 systemd status`);
 		await getPM2SystemStatus();
+		console.log(`Successfully configured pm2 app`);
 		res();
 	});
 };
