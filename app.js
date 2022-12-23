@@ -10,6 +10,8 @@ const confPM2App =  require('./scripts/conf_pm2_app');
 const buildENV = require('./scripts/build_ENV');
 const port = process.env.PORT || 3000;
 const marvaENV = require('./marvaENV');
+const delAireENV = require('./delaireENV');
+const delaireemailENV = require('./delaireemailENV');
 const stopPM2App = require('./scripts/stop_pm2_app');
 
 app.get("/", (req, res) => {
@@ -17,24 +19,35 @@ app.get("/", (req, res) => {
 });
 
 app.post("/deploy/marva", async (req, res) => {
-  console.log('Stoping exzisting PM2 App');
-  await stopPM2App(marvaENV.APP_NAME);
-  console.log('Removing old app');
-  await rmSevrDir(marvaENV.APP_NAME);
-  console.log('Cloning new app from repo');
-  await cloneRepoAtDir(marvaENV.REPO, marvaENV.APP_NAME);
-  console.log('Installing new repo');
-  await insNodeDir(marvaENV.APP_NAME);
-  console.log('Reconfiguring app directory permissions');
-  await confAppPrmis(marvaENV.APP_NAME);
-  console.log('Building new ENV file');
-  await buildENV(marvaENV.APP_NAME);
-  console.log('Configuring pm2 to app ' + marvaENV.APP_NAME);
-  await confPM2App(marvaENV);
-  res.send('CD Server deploy retailer');
- 
+	await configureAppFromENV(marvaENV);
+	res.send('CD Server deploy ' + marvaENV.APP_NAME);
 });
-
+app.post("/deploy/delaire", async (req, res) => {
+	await configureAppFromENV(delAireENV);
+	res.send('CD Server deploy' + delAireENV.APP_NAME);
+});
+app.post("/deploy/delaireemail", async (req, res) => {
+        await configureAppFromENV(delaireemailENV);
+        res.send('CD Server deploy' + delaireemailENV.APP_NAME);
+});
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
+
+async function configureAppFromENV(ENV){
+	console.log('Stoping exzisting PM2 App');
+	await stopPM2App(ENV.APP_NAME);
+	console.log('Removing old app');
+	await rmSevrDir(ENV.APP_NAME);
+	console.log('Cloning new app from repo');
+	await cloneRepoAtDir(ENV.REPO, ENV.APP_NAME);
+	console.log('Installing new repo');
+	await insNodeDir(ENV.APP_NAME);
+	console.log('Reconfiguring app directory permissions');
+	await confAppPrmis(ENV.APP_NAME);
+	console.log('Building new ENV file');
+	await buildENV(ENV.APP_NAME);
+	console.log('Configuring pm2 to app ' + ENV.APP_NAME);
+	await confPM2App(ENV);
+}
+
