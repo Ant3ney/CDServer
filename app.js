@@ -12,6 +12,7 @@ const port = process.env.PORT || 3000;
 const marvaENV = require('./marvaENV');
 const delAireENV = require('./delaireENV');
 const delaireemailENV = require('./delaireemailENV');
+const singularityemailENV = require('./singularityemailENV');
 const stopPM2App = require('./scripts/stop_pm2_app');
 
 app.get("/", (req, res) => {
@@ -30,6 +31,11 @@ app.post("/deploy/delaireemail", async (req, res) => {
         await configureAppFromENV(delaireemailENV);
         res.send('CD Server deploy' + delaireemailENV.APP_NAME);
 });
+app.post("/deploy/singularityemail", async (req, res) => {
+        await configureAppFromENV(singularityemailENV);
+        res.send('CD Server deploy' + singularityemailENV.APP_NAME);
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
