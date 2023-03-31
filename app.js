@@ -13,6 +13,9 @@ const marvaENV = require('./marvaENV');
 const delAireENV = require('./delaireENV');
 const delaireemailENV = require('./delaireemailENV');
 const singularityemailENV = require('./singularityemailENV');
+const brugauthENV = require('./brugauthENV');
+const centinelaemailENV = require('./centinelaemailENV');
+const marvaemailENV = require('./marvaemailENV');
 const stopPM2App = require('./scripts/stop_pm2_app');
 
 app.get("/", (req, res) => {
@@ -35,6 +38,19 @@ app.post("/deploy/singularityemail", async (req, res) => {
         await configureAppFromENV(singularityemailENV);
         res.send('CD Server deploy' + singularityemailENV.APP_NAME);
 });
+app.post("/deploy/brugauth", async (req, res) => {
+        await configureAppFromENV(brugauthENV);
+        res.send('CD Server deploy' + brugauthENV.APP_NAME);
+});
+app.post("/deploy/centinelaemail", async (req, res) => {
+	await configureAppFromENV(centinelaemailENV);
+        res.send('CD Server deploy' + centinelaemailENV.APP_NAME);
+});
+app.post("/deploy/marvaemail", async (req, res) => {
+        await configureAppFromENV(marvaemailENV);
+        res.send('CD Server deploy' + marvaemailENV.APP_NAME);
+});
+
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
